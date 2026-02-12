@@ -174,7 +174,7 @@ export const customShape = {
 
 // Export settings
 export const exportSettings = {
-  format: 'png', // png, svg, sequence
+  format: 'png', // png, svg, sequence, webm, gif
   scale: 1,
   quality: 0.92,
   status: 'Ready',

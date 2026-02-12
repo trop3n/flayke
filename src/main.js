@@ -13,7 +13,7 @@ import {
 } from './grid.js';
 import { drawShape } from './shapes/library.js';
 import { drawSVGPath, loadSVGFile, parseSVG } from './shapes/svg.js';
-import { exportComposition } from './export.js';
+import { exportComposition, getIsRecording } from './export.js';
 
 // Global state
 let isSetup = false;
@@ -84,6 +84,7 @@ const sketch = (p) => {
     if (animation.playing) {
       frameCount += animation.speed;
     }
+    
   };
 
   // --- Cell Drawing ---

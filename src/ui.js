@@ -313,7 +313,13 @@ export function setupUI(cbs) {
   
   exportFolder.addBinding(exportSettings, 'format', {
     label: 'Format',
-    options: { 'PNG': 'png', 'SVG': 'svg', 'PNG Sequence': 'sequence' },
+    options: { 
+      'PNG': 'png', 
+      'SVG': 'svg', 
+      'PNG Sequence': 'sequence',
+      'WebM Video': 'webm',
+      'GIF Animation': 'gif'
+    },
   });
   
   exportFolder.addBinding(exportSettings, 'scale', {

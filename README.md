@@ -41,6 +41,7 @@ A parametric tool for creating complex symmetrical patterns and generative textu
   - PNG (up to 4x scale)
   - SVG (vector output)
   - PNG Sequence (for video)
+  - WebM Video (direct video recording)
 - **Preset System**: 12 built-in presets, save your own as JSON
 
 ## Keyboard Shortcuts
@@ -85,6 +86,7 @@ The output will be in the `dist` folder.
 4. **SVG Import**: Simple, single-path SVGs work best. Icons and glyphs are ideal.
 5. **Animation**: Enable "Animate Size" for subtle breathing effects
 6. **Blend Modes**: "Add" mode creates glowing effects with overlapping shapes
+7. **Video Export**: Use WebM export to record animations directly. Click Export to start, click again to stop.
 
 ## Built-in Presets
 

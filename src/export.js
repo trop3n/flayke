@@ -1,5 +1,5 @@
 // ============================================================
-// Export System - SVG, PNG, and PNG Sequence export
+// Export System - SVG, PNG, PNG Sequence, and VIDEO export
 // ============================================================
 
 import { canvas, animation, exportSettings, grid, shape, palette, customShape } from './state.js';
@@ -7,6 +7,12 @@ import { generateSVG } from './shapes/svg.js';
 import { getGridCells, getShapeSize, getShapeRotation, getFillColor, getStrokeColor } from './grid.js';
 import { drawShape } from './shapes/library.js';
 import { drawSVGPath } from './shapes/svg.js';
+
+// Video recording state
+let mediaRecorder = null;
+let recordedChunks = [];
+let isRecording = false;
+let recordStartFrame = 0;
 
 /**
  * Export current composition
@@ -16,6 +22,12 @@ import { drawSVGPath } from './shapes/svg.js';
  */
 export async function exportComposition(p, frameCount = 0) {
   const format = exportSettings.format;
+  
+  if (format === 'webm') {
+    await exportWebM(p);
+    return;
+  }
+  
   exportSettings.status = 'Exporting...';
   
   try {
@@ -162,6 +174,89 @@ async function exportSequence(p) {
     // Small delay to prevent freezing
     await new Promise(r => setTimeout(r, 10));
   }
+  
+  exportSettings.status = 'Sequence complete!';
+}
+
+/**
+ * Export WebM video using MediaRecorder API
+ * @param {p5} p - p5 instance
+ */
+async function exportWebM(p) {
+  if (isRecording) {
+    stopRecording();
+    return;
+  }
+  
+  // Check for MediaRecorder support
+  if (!MediaRecorder.isTypeSupported('video/webm')) {
+    alert('WebM video recording is not supported in this browser. Try Chrome or Firefox.');
+    return;
+  }
+  
+  // Get canvas stream
+  const stream = p.canvas.captureStream(30); // 30 fps
+  
+  // Create MediaRecorder
+  mediaRecorder = new MediaRecorder(stream, {
+    mimeType: 'video/webm;codecs=vp9',
+    videoBitsPerSecond: 5000000, // 5 Mbps
+  });
+  
+  recordedChunks = [];
+  
+  mediaRecorder.ondataavailable = (event) => {
+    if (event.data.size > 0) {
+      recordedChunks.push(event.data);
+    }
+  };
+  
+  mediaRecorder.onstop = () => {
+    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `flake-animation-${Date.now()}.webm`;
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    exportSettings.status = 'Video saved!';
+    setTimeout(() => {
+      exportSettings.status = 'Ready';
+    }, 2000);
+  };
+  
+  // Start recording
+  mediaRecorder.start();
+  isRecording = true;
+  recordStartFrame = p.frameCount;
+  
+  exportSettings.status = 'Recording WebM... Click Export again to stop';
+  
+  // Ensure animation is playing
+  if (!animation.playing) {
+    animation.playing = true;
+    p.loop();
+  }
+}
+
+/**
+ * Stop video recording
+ */
+export function stopRecording() {
+  if (!isRecording || !mediaRecorder) return;
+  
+  isRecording = false;
+  mediaRecorder.stop();
+  mediaRecorder = null;
+}
+
+/**
+ * Check if currently recording
+ * @returns {boolean}
+ */
+export function getIsRecording() {
+  return isRecording;
 }
 
 /**
