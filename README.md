@@ -1,6 +1,6 @@
 # FLAKE Tool
 
-A parametric tool for creating complex symmetrical patterns and generative textures based on vector custom shapes. Built with p5.js and inspired by Antlii's FLAKE Tool.
+A parametric tool for creating complex symmetrical patterns and generative textures based on vector custom shapes. Built with p5.js.
 
 ![FLAKE Tool Preview](preview.png)
 
