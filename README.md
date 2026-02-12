@@ -114,6 +114,4 @@ MIT License - Feel free to use, modify, and distribute.
 
 ## Credits
 
-Inspired by [Antlii's FLAKE Tool](https://antlii.work/FLAKE-Tool).
-
 Created as a learning project for creative coding with p5.js, paper.js, and generative art techniques.
